@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购买清单</title>
+</head>
+<body>
+<h2>用户：{{ user.username }}</h2>
+<h2>购买商品如下：</h2>
+{% for good in user.goods %}
+    <p>{{ good.gname }}___{{ good.price }}</p>
+{% endfor %}
+
+</body>
+</html>

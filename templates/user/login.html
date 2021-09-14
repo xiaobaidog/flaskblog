@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    用户登录
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #container {
+            padding-top: 20px;
+            height: 600px;
+        }
+        #tab{
+            text-align: center;
+            padding-bottom: 10px;
+            color: white;
+            font-size: 16px;
+        }
+        #container h1{
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <div id="container">
+        <h1>用户登录</h1>
+        <div id="tab">
+            <span>用户密码登录</span>   |   <span>手机验证码登录</span>
+        </div>
+        <div class="logintab">
+            <form class="form-horizontal" method="post" action="{{ url_for('user.login') }}?f=1">
+                <div class="form-group">
+                    <label for="inputUsername" class="col-md-offset-2 col-md-2 control-label">用户名</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="inputUsername" placeholder="username"
+                               name="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword" class="col-md-offset-2 col-md-2 control-label">密码</label>
+                    <div class="col-md-4">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="password"
+                               name="password">
+                        <p style="color: brown">{{ msg }}</p>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-5 col-md-10">
+                            <button type="submit" class="btn btn-primary col-md-2">登录</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="logintab">
+            <form class="form-horizontal" method="post" action="{{ url_for('user.login') }}?f=2">
+                <div class="form-group">
+                    <label for="inputPhone" class="col-md-offset-2 col-md-2 control-label">手机号</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="inputPhone" placeholder="手机号输入"
+                               name="phone">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputCode" class="col-md-offset-2 col-md-2 control-label">验证码</label>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="inputCode " placeholder="验证码输入"
+                               name="code">
+                        <p style="color: brown">{{ msg }}</p>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="button" id="btnCheck" class="btn btn-info" value="获取验证码">
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-5 col-md-10">
+                            <button type="submit" class="btn btn-primary col-md-2">登录</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(function (){
+            $(".logintab").hide()
+            $(".logintab").first().show()
+            $("#tab span").each(function (i){
+                $(this).click(function (){
+                    $(".logintab").hide()
+                    $(".logintab").eq(i).show()
+                })
+            });
+
+            //发送验证码
+            $("#btnCheck").click(function (){
+                let phone = $("#inputPhone").val()
+                let span_obj = $("#inputPhone").next('span')
+                span_obj.css({'color':'red', 'font-size':'12px'})
+                if(phone.length == 11){
+                    span_obj.text('')
+                    $.get('{{ url_for('user.send_message') }}', {phone:phone}, function (data){
+                        if(data.code == 200){
+                            alert('发送成功');
+                        }else{
+                            alert(data.msg);
+                        }
+                    })
+                }else{
+                    span_obj.text('必须啊输入十一位的手机号')
+                }
+            })
+        })
+    </script>
+{% endblock %}

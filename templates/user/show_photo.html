@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+相册列表
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+    <style>
+        .img1{
+
+            text-align: center;
+            margin:20px 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+{% for photo in photos %}
+    <div class="img1">
+        <img src="http://qxvd4jojt.hn-bkt.clouddn.com/{{ photo.photo_name }}" alt="" width="25%" height="25%" class="img-rounded">
+    </div>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+关于作者
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+    <style>
+        #container{
+            width: 1000px;
+            margin: 0 auto;
+        }
+        #container p{
+            width: 80%;
+            background-color: rgba(255, 255, 255, 0.5);
+            font-size: 18px;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <div id="container">
+    <p>
+        {% if user.aboutme %}
+            {{ user.aboutme[0].content | cdecode | safe }}
+        {% else %}
+            没有设置信息，去用户中心设置
+        {% endif %}
+    </p>
+    </div>
+{% endblock %}

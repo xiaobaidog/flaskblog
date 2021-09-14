@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    留言板
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        #container {
+            width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(30, 150, 196, 0.5);
+        }
+
+        #left {
+            float: left;
+        }
+
+        #right {
+            float: right;
+        }
+        #item{
+            background-color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+        #item_left{
+            float: left;
+        }
+        #Acomment{
+            font-size: 18px;
+            margin-left: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block newcontent %}
+    <div id="container">
+
+
+        <div id="comment">
+            <p>用户留言</p>
+            <div>
+                <form action="{{ url_for('user.show_board') }}" method="post">
+                    <input type="hidden" value="" name="aid">
+                    <p>
+                        <textarea name="board" id="" cols="100" rows="10"></textarea>
+                    </p>
+                    <input type="submit" class="btn-primary" value="留言">
+                </form>
+            </div>
+            <div id="comment_item">
+                {% if boards %}
+                    {% for board in boards.items %}
+                        <div id="item">
+                            <div id="item_left">
+                                <img src="{% if board.user.icon %}{{ url_for('static', filename=board.user.icon) }}
+                                            {% else %}{{ url_for('static', filename='img/touxiang.png') }}{% endif %}"
+                                     alt="" width="50" height="50" class="img-circle">
+                            </div>
+                            <div id="item_right">
+                                <p style="margin-left: 10px; margin-top: 10px;">
+                                    <span style="margin-left: 10px">{% if not board.user_id %}匿名用户
+                                        {% else %}{{board.user.username}}{% endif %}</span>
+                                    <span style="margin-left: 10px">{{ board.mdatetime}}</span>
+                                </p>
+                                <div id="Acomment">{{ board.content }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% else %}
+                    还没有留言，快来吧~~~~~~~
+                {% endif %}
+            </div>
+        </div>
+        <nav aria-label="Page navigation" class="col-md-offset-4">
+            <ul class="pagination">
+                <li {% if not boards.has_prev %}class="disabled" {% endif %} >
+                    <a href="{{ url_for('user.show_board') }}?page={{ boards.page - 1 }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% for page_num in range(1,boards.pages + 1) %}
+                    <li {% if boards.page==page_num %}class="active"{% endif %} >
+                        <a href="{{ url_for('user.show_board') }}?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                <li {% if not boards.has_next %}class="disabled" {% endif %} >
+                    <a href="{{url_for('user.show_board')}}?page={{ boards.page + 1 }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(function () {
+
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物界面</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<form action="">
+    <p>
+        <select name="uid">
+            <option value="0">选择用户</option>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+
+        </select>
+    </p>
+    <p>
+        <table border="1" cellspacing="0" width="50%">
+            <tr>
+                <th>序号</th>
+                <th>商品名</th>
+                <th>价格</th>
+                <th>操作</th>
+            </tr>
+            {% for good in goods %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="{{ url_for('goods.find_users') }}?gid={{ good.id }}">{{ good.gname }}</a></td>
+                    <td>{{ good.price }}</td>
+                    <td><input type="button" class="btnbuy" value="购买" tag="{{ good.id }}"></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </p>
+</form>
+<script>
+    $('.btnbuy').click(function (){
+        let good_id = $(this).attr('tag');
+        let user_id = $('select[name="uid"]').val();
+        location.href = '/buy?uid='+user_id+'&gid='+good_id;
+    })
+</script>
+</body>
+</html>

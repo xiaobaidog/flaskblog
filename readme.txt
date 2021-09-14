@@ -1,0 +1,17 @@
+sceretid: 5e583417fffccfa0a9f0d5bc5d45c0b6
+sceretkey:c64b167e25197862f5312fcadc0d3f19
+businessid:
+
+
+钩子函数：
+直接应用在app：
+before_first_request
+before_request
+after_request
+teardown_request
+
+应用到蓝图上：
+before_app_first_request
+before_app_request
+after_app_request
+teardown_app_request
